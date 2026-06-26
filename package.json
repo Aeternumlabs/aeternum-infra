@@ -1,15 +1,19 @@
 {
   "name": "aeternum-infra",
+  "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@11.5.0",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "start": "turbo run start"
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "clean": "turbo clean",
+    "format": "prettier --write \"**/*.{ts,json}\""
   },
   "devDependencies": {
-    "@types/node": "^25.9.1",
-    "turbo": "^2.5.4",
-    "typescript": "^6.0.3"
+    "prettier": "^3.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.0.0"
   }
 }
