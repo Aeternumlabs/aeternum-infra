@@ -7,7 +7,7 @@
  */
 
 import { createConfig } from "ponder";
-import { AETERNUM_VAULT_ABI } from "./abis/AeternumVault";
+import { AETERNUM_VAULT_ABI } from "@aeternum/blockchain";
 
 export default createConfig({
   chains: {
@@ -25,7 +25,7 @@ export default createConfig({
       chain: "sepolia",
       // Set dynamically via env or fallback to your hardcoded testnet address
       address: (process.env.NEXT_PUBLIC_VAULT_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
-      startBlock: 11068816,
+      startBlock: 11140604,
     },
   },
 });

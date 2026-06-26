@@ -1,6 +1,4 @@
 /**
- * abis/AeternumVault.ts
- *
  * AeternumVault contract ABI — typed as const for full viem/wagmi inference.
  * Generated from forge build output (out/AeternumVault.sol/AeternumVault.json).
  *
@@ -23,24 +21,9 @@ export const AETERNUM_VAULT_ABI = [
         "internalType": "uint256"
       },
       {
-        "name": "maxCheckUpkeepSize_",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "maxPerformUpkeepSize_",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
         "name": "maxRecoveryAttempts_",
         "type": "uint8",
         "internalType": "uint8"
-      },
-      {
-        "name": "cursorAdvanceInterval_",
-        "type": "uint256",
-        "internalType": "uint256"
       }
     ],
     "stateMutability": "nonpayable"
@@ -51,46 +34,7 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "function",
-    "name": "CURSOR_ADVANCE_INTERVAL",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "MAX_CHECK_UPKEEP_SIZE",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "MAX_INACTIVITY_PERIOD",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "MAX_PERFORM_UPKEEP_SIZE",
     "inputs": [],
     "outputs": [
       {
@@ -136,73 +80,10 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "function",
-    "name": "checkUpkeep",
-    "inputs": [
-      {
-        "name": "",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "upkeepNeeded",
-        "type": "bool",
-        "internalType": "bool"
-      },
-      {
-        "name": "performData",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "deposit",
     "inputs": [],
     "outputs": [],
     "stateMutability": "payable"
-  },
-  {
-    "type": "function",
-    "name": "getCheckCursor",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getForwarder",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getLastCursorAdvance",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -318,6 +199,30 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "function",
+    "name": "getTriggerableVaultsBatch",
+    "inputs": [
+      {
+        "name": "startIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "batchSize",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "triggerable",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "isBackupAbandoned",
     "inputs": [
       {
@@ -375,19 +280,6 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "function",
-    "name": "performUpkeep",
-    "inputs": [
-      {
-        "name": "performData",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "ping",
     "inputs": [],
     "outputs": [],
@@ -431,10 +323,10 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "function",
-    "name": "setForwarder",
+    "name": "triggerRecovery",
     "inputs": [
       {
-        "name": "forwarder",
+        "name": "wallet",
         "type": "address",
         "internalType": "address"
       }
@@ -528,19 +420,6 @@ export const AETERNUM_VAULT_ABI = [
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ForwarderSet",
-    "inputs": [
-      {
-        "name": "forwarder",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -739,11 +618,6 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "error",
-    "name": "AeternumVault__ForwarderAlreadySet",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AeternumVault__InsufficientBalance",
     "inputs": []
   },
@@ -764,27 +638,12 @@ export const AETERNUM_VAULT_ABI = [
   },
   {
     "type": "error",
-    "name": "AeternumVault__InvalidConstructorParam",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AeternumVault__InvalidInactivityPeriod",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "AeternumVault__MaxPerformUpkeepSizeExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "AeternumVault__MaxRecoveryAttemptsExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__NotForwarder",
     "inputs": []
   },
   {
@@ -807,4 +666,35 @@ export const AETERNUM_VAULT_ABI = [
     "name": "ReentrancyGuardReentrantCall",
     "inputs": []
   }
+] as const;
+
+export const MULTICALL3_ABI = [
+  {
+    type: "function",
+    name: "aggregate3",
+    inputs: [
+      {
+        name: "calls",
+        type: "tuple[]",
+        internalType: "struct Multicall3.Call3[]",
+        components: [
+          { name: "target", type: "address", internalType: "address" },
+          { name: "allowFailure", type: "bool", internalType: "bool" },
+          { name: "callData", type: "bytes", internalType: "bytes" },
+        ],
+      },
+    ],
+    outputs: [
+      {
+        name: "returnData",
+        type: "tuple[]",
+        internalType: "struct Multicall3.Result[]",
+        components: [
+          { name: "success", type: "bool", internalType: "bool" },
+          { name: "returnData", type: "bytes", internalType: "bytes" },
+        ],
+      },
+    ],
+    stateMutability: "payable",
+  },
 ] as const;

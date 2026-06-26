@@ -1,22 +1,21 @@
 {
-  "name": "@aeternum/indexer",
+  "name": "@aeternum/keeper",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "ponder dev",
-    "start": "ponder start",
-    "codegen": "ponder codegen",
-    "build": "ponder codegen"
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
-    "hono": "^4.12.23",
-    "ponder": "^0.16.6",
+    "@aeternum/config": "workspace:*",
     "viem": "^2.51.3"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "tsx": "^4.20.3",
     "typescript": "^6.0.3"
   }
 }
