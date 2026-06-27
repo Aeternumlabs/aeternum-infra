@@ -16,6 +16,7 @@ export const vaults = onchainTable("vaults", (t) => ({
   lastActivityTimestamp: t.bigint().notNull(),
   isRecovered: t.boolean().notNull().default(false),
   isAbandoned: t.boolean().notNull().default(false),
+  isCancelled: t.boolean().notNull().default(false),
   createdAtBlock: t.bigint().notNull(),
 }));
 
