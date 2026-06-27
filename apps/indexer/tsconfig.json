@@ -1,4 +1,13 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["**/*.ts"]
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "isolatedModules": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist", "generated", ".ponder"]
 }
