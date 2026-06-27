@@ -13,7 +13,7 @@ export default createConfig({
   chains: {
     sepolia: {
       id: 11155111,
-      rpc: process.env.DRPC_URL,
+      rpc: process.env.RPC_URL,
       maxRequestsPerSecond: 10,
       // Force Ponder to fetch logs in smaller chunks to avoid payload timeouts
       ethGetLogsBlockRange: 1000, 
@@ -24,8 +24,8 @@ export default createConfig({
       abi: AETERNUM_VAULT_ABI,
       chain: "sepolia",
       // Set dynamically via env or fallback to your hardcoded testnet address
-      address: (process.env.NEXT_PUBLIC_VAULT_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
-      startBlock: 11140604,
+      address: (process.env.CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
+      startBlock: parseInt(process.env.CONTRACT_DEPLOY_BLOCK ?? "11140604"),
     },
   },
 });
