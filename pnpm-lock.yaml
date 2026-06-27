@@ -8,15 +8,15 @@ importers:
 
   .:
     devDependencies:
-      '@types/node':
-        specifier: ^25.9.1
-        version: 25.9.4
+      prettier:
+        specifier: ^3.0.0
+        version: 3.8.4
       turbo:
-        specifier: ^2.5.4
+        specifier: ^2.0.0
         version: 2.10.0
       typescript:
-        specifier: ^6.0.3
-        version: 6.0.3
+        specifier: ^5.0.0
+        version: 5.9.3
 
   apps/indexer:
     dependencies:
@@ -1283,6 +1283,11 @@ packages:
     resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
     engines: {node: '>=12'}
 
+  prettier@3.8.4:
+    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   process-warning@3.0.0:
     resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
 
@@ -1440,6 +1445,11 @@ packages:
   type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
@@ -2531,6 +2541,8 @@ snapshots:
 
   postgres@3.4.9: {}
 
+  prettier@3.8.4: {}
+
   process-warning@3.0.0: {}
 
   process@0.11.10: {}
@@ -2693,6 +2705,8 @@ snapshots:
   type-fest@2.19.0: {}
 
   type-fest@3.13.1: {}
+
+  typescript@5.9.3: {}
 
   typescript@6.0.3: {}
 
