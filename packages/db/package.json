@@ -3,16 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "postgres": "^3.4.7"
+    "drizzle-orm": "^0.30.0",
+    "postgres": "^3.4.0"
   },
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "typescript": "^6.0.3"
   }
 }
