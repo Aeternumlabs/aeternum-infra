@@ -7,7 +7,7 @@
     "dev":     "dotenv -e ../../.env -e .env -- ponder dev",
     "start":   "dotenv -e ../../.env -e .env -- ponder start",
     "codegen": "dotenv -e ../../.env -- ponder codegen",
-    "build":   "dotenv -e ../../.env -- ponder codegen"
+    "build":   "dotenv -e ../../.env -- ponder build"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
