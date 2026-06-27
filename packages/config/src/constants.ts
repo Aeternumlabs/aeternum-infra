@@ -21,16 +21,6 @@ export const NETWORK_NAMES: Record<number, string> = {
   [CHAIN_IDS.ANVIL]: "anvil",
 };
 
-// --- External Contracts ---
-/**
- * Multicall3 is deployed at the same address on every major EVM chain.
- * Used by the keeper bot to batch multiple triggerRecovery calls into a single
- * transaction via aggregate3 with allowFailure: true.
- * @see https://www.multicall3.com
- */
-export const MULTICALL3_ADDRESS =
-  "0xcA11bde05977b3631167028862bE2a173976CA11" as const;
-
 // --- Keeper Defaults ---
 /**
  * Default operational parameters for apps/keeper.
