@@ -3,7 +3,6 @@ export type { Env } from "./env.js";
 export {
   CHAIN_IDS,
   NETWORK_NAMES,
-  MULTICALL3_ADDRESS,
   KEEPER_DEFAULTS,
   MAX_RECOVERY_ATTEMPTS,
 } from "./constants.js";
