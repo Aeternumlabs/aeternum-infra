@@ -1,5 +1,37 @@
-node_modules
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+
+# Ponder generated artifacts and cache
+apps/indexer/generated/
+apps/indexer/.ponder/
+
+# Turborepo cache
+.turbo/
+
+# Environment variables
 .env
 .env.local
-.turbo
-dist
+.env.*.local
+!.env.example
+
+# Railway
+.railway/
+
+# Logs
+*.log
+logs/
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
