@@ -1,34 +1,54 @@
+/**
+ * src/env.ts
+ *
+ * Validates all shared environment variables at startup using zod.
+ * Both apps/indexer and apps/keeper import `env` from this module.
+ *
+ * Design: validation runs at module import time. If any required variable is
+ * missing or malformed, the process exits immediately with a clear error
+ * rather than failing silently at runtime.
+ *
+ * App-specific variables (e.g. KEEPER_PRIVATE_KEY) are validated in each
+ * app's own env module, not here.
+ */
+
 import { z } from "zod";
 
-const addressSchema = z
-  .string()
-  .regex(/^0x[a-fA-F0-9]{40}$/, "Expected a checksummed or lowercase address");
+const envSchema = z.object({
+  // --- Network ---
+  CHAIN_ID: z.coerce
+    .number()
+    .int()
+    .positive("CHAIN_ID must be a positive integer"),
 
-const privateKeySchema = z
-  .string()
-  .regex(/^0x[a-fA-F0-9]{64}$/, "Expected a 32-byte hex private key");
+  RPC_URL: z.string().url("RPC_URL must be a valid URL"),
 
-export const sharedEnvSchema = z.object({
-  DRPC_URL: z.string().min(1),
-  DATABASE_URL: z.string().min(1),
-  NEXT_PUBLIC_VAULT_ADDRESS: addressSchema,
+  // --- Contract ---
+  CONTRACT_ADDRESS: z
+    .string()
+    .regex(/^0x[a-fA-F0-9]{40}$/, "CONTRACT_ADDRESS must be a valid Ethereum address"),
+
+  CONTRACT_DEPLOY_BLOCK: z.coerce
+    .number()
+    .int()
+    .nonnegative("CONTRACT_DEPLOY_BLOCK must be a non-negative integer"),
+
+  // --- Database ---
+  DATABASE_URL: z.string().url("DATABASE_URL must be a valid connection string"),
 });
 
-export const keeperEnvSchema = sharedEnvSchema.extend({
-  KEEPER_PRIVATE_KEY: privateKeySchema,
-  POLL_INTERVAL_MS: z.coerce.number().int().positive().default(60_000),
-  BATCH_SIZE: z.coerce.number().int().positive().default(50),
-});
+const parsed = envSchema.safeParse(process.env);
 
-export function parseEnv<T extends z.ZodTypeAny>(
-  schema: T,
-  env: Record<string, string | undefined> = process.env,
-): z.infer<T> {
-  const result = schema.safeParse(env);
-  if (!result.success) {
-    throw new Error(
-      `Invalid environment configuration:\n${result.error.toString()}`,
-    );
+if (!parsed.success) {
+  console.error("❌  Invalid environment variables:\n");
+  const errors = parsed.error.flatten().fieldErrors;
+  for (const [field, messages] of Object.entries(errors)) {
+    console.error(`  ${field}: ${messages?.join(", ")}`);
   }
-  return result.data;
+  console.error("\nCheck your .env file against .env.example and try again.");
+  process.exit(1);
 }
+
+export const env = parsed.data;
+
+export type Env = typeof env;
