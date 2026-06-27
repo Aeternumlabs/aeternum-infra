@@ -1,672 +1,261 @@
 /**
- * AeternumVault contract ABI — typed as const for full viem/wagmi inference.
+ * src/abi.ts
+ *
+ * AeternumVault contract ABI — typed as const for full viem inference.
  * Generated from forge build output (out/AeternumVault.sol/AeternumVault.json).
  *
- * Do not edit manually. If the contract changes, re-export the ABI
- * from the Foundry build output and replace this file entirely.
+ * Do not edit manually. If the contract changes, re-export the ABI from the
+ * Foundry build output and replace this file entirely.
+ *
+ * Multicall3 ABI and address are co-located here because they are always used
+ * together with AETERNUM_VAULT_ABI — both are needed by the keeper's executor.
  */
 
 export const AETERNUM_VAULT_ABI = [
   {
     "type": "constructor",
     "inputs": [
-      {
-        "name": "minInactivityPeriod_",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "maxInactivityPeriod_",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "maxRecoveryAttempts_",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
+      { "name": "minInactivityPeriod_", "type": "uint256", "internalType": "uint256" },
+      { "name": "maxInactivityPeriod_", "type": "uint256", "internalType": "uint256" },
+      { "name": "maxRecoveryAttempts_",  "type": "uint8",   "internalType": "uint8"   }
     ],
     "stateMutability": "nonpayable"
   },
+  { "type": "receive", "stateMutability": "payable" },
   {
-    "type": "receive",
-    "stateMutability": "payable"
-  },
-  {
-    "type": "function",
-    "name": "MAX_INACTIVITY_PERIOD",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
+    "type": "function", "name": "MAX_INACTIVITY_PERIOD",
+    "inputs": [], "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "MAX_RECOVERY_ATTEMPTS",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint8",
-        "internalType": "uint8"
-      }
-    ],
+    "type": "function", "name": "MAX_RECOVERY_ATTEMPTS",
+    "inputs": [], "outputs": [{ "name": "", "type": "uint8", "internalType": "uint8" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "MIN_INACTIVITY_PERIOD",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
+    "type": "function", "name": "MIN_INACTIVITY_PERIOD",
+    "inputs": [], "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "cancelRecovery",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "type": "function", "name": "cancelRecovery",
+    "inputs": [], "outputs": [], "stateMutability": "nonpayable"
   },
   {
-    "type": "function",
-    "name": "deposit",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "payable"
+    "type": "function", "name": "deposit",
+    "inputs": [], "outputs": [], "stateMutability": "payable"
   },
   {
-    "type": "function",
-    "name": "getRecoveryConfig",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
+    "type": "function", "name": "getRecoveryConfig",
+    "inputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
     "outputs": [
       {
-        "name": "",
-        "type": "tuple",
-        "internalType": "struct IAeternumVault.RecoveryConfig",
+        "name": "", "type": "tuple", "internalType": "struct IAeternumVault.RecoveryConfig",
         "components": [
-          {
-            "name": "backupAddress",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "inactivityPeriod",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "lastActivity",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "balance",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "isActive",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "failedRecoveryAttempts",
-            "type": "uint8",
-            "internalType": "uint8"
-          },
-          {
-            "name": "isAbandoned",
-            "type": "bool",
-            "internalType": "bool"
-          }
+          { "name": "backupAddress",          "type": "address", "internalType": "address" },
+          { "name": "inactivityPeriod",        "type": "uint256", "internalType": "uint256" },
+          { "name": "lastActivity",            "type": "uint256", "internalType": "uint256" },
+          { "name": "balance",                 "type": "uint256", "internalType": "uint256" },
+          { "name": "isActive",                "type": "bool",    "internalType": "bool"    },
+          { "name": "failedRecoveryAttempts",  "type": "uint8",   "internalType": "uint8"   },
+          { "name": "isAbandoned",             "type": "bool",    "internalType": "bool"    }
         ]
       }
     ],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "getRegisteredWallets",
+    "type": "function", "name": "getRegisteredWallets",
     "inputs": [
-      {
-        "name": "start",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "end",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+      { "name": "start", "type": "uint256", "internalType": "uint256" },
+      { "name": "end",   "type": "uint256", "internalType": "uint256" }
     ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address[]",
-        "internalType": "address[]"
-      }
-    ],
+    "outputs": [{ "name": "", "type": "address[]", "internalType": "address[]" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "getTimeUntilRecovery",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
+    "type": "function", "name": "getTimeUntilRecovery",
+    "inputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "getTotalRegistered",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
+    "type": "function", "name": "getTotalRegistered",
+    "inputs": [], "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "getTriggerableVaultsBatch",
+    "type": "function", "name": "getTriggerableVaultsBatch",
     "inputs": [
-      {
-        "name": "startIndex",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "batchSize",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+      { "name": "startIndex", "type": "uint256", "internalType": "uint256" },
+      { "name": "batchSize",  "type": "uint256", "internalType": "uint256" }
     ],
-    "outputs": [
-      {
-        "name": "triggerable",
-        "type": "address[]",
-        "internalType": "address[]"
-      }
-    ],
+    "outputs": [{ "name": "triggerable", "type": "address[]", "internalType": "address[]" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "isBackupAbandoned",
-    "inputs": [
-      {
-        "name": "backup",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
+    "type": "function", "name": "isBackupAbandoned",
+    "inputs": [{ "name": "backup", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "isRecoveryDue",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
+    "type": "function", "name": "isRecoveryDue",
+    "inputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "isRegistered",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
+    "type": "function", "name": "isRegistered",
+    "inputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "ping",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "type": "function", "name": "ping",
+    "inputs": [], "outputs": [], "stateMutability": "nonpayable"
   },
   {
-    "type": "function",
-    "name": "register",
+    "type": "function", "name": "register",
     "inputs": [
-      {
-        "name": "backupAddress",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "inactivityPeriod",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+      { "name": "backupAddress",   "type": "address", "internalType": "address" },
+      { "name": "inactivityPeriod","type": "uint256", "internalType": "uint256" }
     ],
-    "outputs": [],
-    "stateMutability": "payable"
+    "outputs": [], "stateMutability": "payable"
   },
   {
-    "type": "function",
-    "name": "send",
+    "type": "function", "name": "send",
     "inputs": [
-      {
-        "name": "to",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+      { "name": "to",     "type": "address", "internalType": "address" },
+      { "name": "amount", "type": "uint256", "internalType": "uint256" }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+    "outputs": [], "stateMutability": "nonpayable"
   },
   {
-    "type": "function",
-    "name": "triggerRecovery",
+    "type": "function", "name": "triggerRecovery",
+    "inputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
+    "outputs": [], "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function", "name": "updateBackupAddress",
+    "inputs": [{ "name": "newBackupAddress", "type": "address", "internalType": "address" }],
+    "outputs": [], "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function", "name": "updateInactivityPeriod",
+    "inputs": [{ "name": "newPeriod", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [], "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function", "name": "withdrawAll",
+    "inputs": [], "outputs": [], "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event", "name": "ActivityPinged",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+      { "name": "wallet",    "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "timestamp", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "function",
-    "name": "updateBackupAddress",
+    "type": "event", "name": "BackupAddressUpdated",
     "inputs": [
-      {
-        "name": "newBackupAddress",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+      { "name": "wallet",           "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "newBackupAddress", "type": "address", "indexed": true,  "internalType": "address" }
+    ], "anonymous": false
   },
   {
-    "type": "function",
-    "name": "updateInactivityPeriod",
+    "type": "event", "name": "Deposited",
     "inputs": [
-      {
-        "name": "newPeriod",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
+      { "name": "wallet", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "function",
-    "name": "withdrawAll",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "event",
-    "name": "ActivityPinged",
+    "type": "event", "name": "InactivityPeriodUpdated",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "timestamp",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",    "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "newPeriod", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "BackupAddressUpdated",
+    "type": "event", "name": "RecoveryAbandoned",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newBackupAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",        "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "backupAddress", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "balance",       "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "Deposited",
+    "type": "event", "name": "RecoveryCancelled",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",       "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "refundAmount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "InactivityPeriodUpdated",
+    "type": "event", "name": "RecoveryExecuted",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newPeriod",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",        "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "backupAddress", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount",        "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "RecoveryAbandoned",
+    "type": "event", "name": "RecoveryFailed",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "backupAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "balance",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",        "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "backupAddress", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount",        "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "RecoveryCancelled",
+    "type": "event", "name": "RecoveryRegistered",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "refundAmount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet",          "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "backupAddress",   "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "inactivityPeriod","type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "RecoveryExecuted",
+    "type": "event", "name": "Sent",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "backupAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "to",     "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
   {
-    "type": "event",
-    "name": "RecoveryFailed",
+    "type": "event", "name": "Withdrawn",
     "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "backupAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
+      { "name": "wallet", "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount", "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ], "anonymous": false
   },
-  {
-    "type": "event",
-    "name": "RecoveryRegistered",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "backupAddress",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "inactivityPeriod",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "Sent",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "to",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "Withdrawn",
-    "inputs": [
-      {
-        "name": "wallet",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__AlreadyRegistered",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__DirectTransferNotAllowed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__InsufficientBalance",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__InvalidAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__InvalidAmount",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__InvalidBackupAddress",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__InvalidInactivityPeriod",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__MaxRecoveryAttemptsExceeded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__NotRegistered",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__TransferFailed",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "AeternumVault__WalletAbandoned",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ReentrancyGuardReentrantCall",
-    "inputs": []
-  }
+  { "type": "error", "name": "AeternumVault__AlreadyRegistered",        "inputs": [] },
+  { "type": "error", "name": "AeternumVault__DirectTransferNotAllowed", "inputs": [] },
+  { "type": "error", "name": "AeternumVault__InsufficientBalance",      "inputs": [] },
+  { "type": "error", "name": "AeternumVault__InvalidAddress",           "inputs": [] },
+  { "type": "error", "name": "AeternumVault__InvalidAmount",            "inputs": [] },
+  { "type": "error", "name": "AeternumVault__InvalidBackupAddress",     "inputs": [] },
+  { "type": "error", "name": "AeternumVault__InvalidInactivityPeriod",  "inputs": [] },
+  { "type": "error", "name": "AeternumVault__MaxRecoveryAttemptsExceeded", "inputs": [] },
+  { "type": "error", "name": "AeternumVault__NotRegistered",            "inputs": [] },
+  { "type": "error", "name": "AeternumVault__TransferFailed",           "inputs": [] },
+  { "type": "error", "name": "AeternumVault__WalletAbandoned",          "inputs": [] },
+  { "type": "error", "name": "ReentrancyGuardReentrantCall",            "inputs": [] }
 ] as const;
+
+export type AeternumVaultAbi = typeof AETERNUM_VAULT_ABI;
+
+// ─── Multicall3 ──────────────────────────────────────────────────────────────
+// Deployed at the same address on every major EVM chain.
+// Used by the keeper to batch multiple triggerRecovery calls into a single
+// transaction via aggregate3 with allowFailure: true.
+// @see https://www.multicall3.com
+
+export const MULTICALL3_ADDRESS =
+  "0xcA11bde05977b3631167028862bE2a173976CA11" as const;
 
 export const MULTICALL3_ABI = [
   {
@@ -678,9 +267,9 @@ export const MULTICALL3_ABI = [
         type: "tuple[]",
         internalType: "struct Multicall3.Call3[]",
         components: [
-          { name: "target", type: "address", internalType: "address" },
-          { name: "allowFailure", type: "bool", internalType: "bool" },
-          { name: "callData", type: "bytes", internalType: "bytes" },
+          { name: "target",       type: "address", internalType: "address" },
+          { name: "allowFailure", type: "bool",    internalType: "bool"    },
+          { name: "callData",     type: "bytes",   internalType: "bytes"   },
         ],
       },
     ],
@@ -690,7 +279,7 @@ export const MULTICALL3_ABI = [
         type: "tuple[]",
         internalType: "struct Multicall3.Result[]",
         components: [
-          { name: "success", type: "bool", internalType: "bool" },
+          { name: "success",    type: "bool",  internalType: "bool"  },
           { name: "returnData", type: "bytes", internalType: "bytes" },
         ],
       },
@@ -698,3 +287,5 @@ export const MULTICALL3_ABI = [
     stateMutability: "payable",
   },
 ] as const;
+
+export type Multicall3Abi = typeof MULTICALL3_ABI;
