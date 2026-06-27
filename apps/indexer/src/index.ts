@@ -19,6 +19,7 @@ ponder.on("AeternumVault:RecoveryRegistered", async ({ event, context }) => {
     lastActivityTimestamp: event.block.timestamp,
     isRecovered: false,
     isAbandoned: false,
+    isCancelled: false,
     createdAtBlock: event.block.number,
   }).onConflictDoUpdate({
     backupAddress: event.args.backupAddress,
@@ -235,6 +236,11 @@ ponder.on("AeternumVault:RecoveryAbandoned", async ({ event, context }) => {
 });
 
 ponder.on("AeternumVault:RecoveryCancelled", async ({ event, context }) => {
+  // Update vault state to reflect cancellation
+  await context.db.update(schema.vaults, { id: event.args.wallet }).set({
+    isCancelled: true,
+  });
+
   // Moved from recoveryEvents to unified ledger
   await context.db.insert(schema.vaultTransactions).values({
     id: `${event.transaction.hash}-${event.log.logIndex}`,
