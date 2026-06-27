@@ -12,7 +12,7 @@ import { AETERNUM_VAULT_ABI } from "@aeternum/blockchain";
 export default createConfig({
   chains: {
     sepolia: {
-      id: 11155111,
+      id: parseInt(process.env.CHAIN_ID || "11155111"),
       rpc: process.env.RPC_URL,
       maxRequestsPerSecond: 10,
       // Force Ponder to fetch logs in smaller chunks to avoid payload timeouts
