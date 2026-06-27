@@ -1,3 +1,6 @@
+[build]
+rootDirectory = "apps/indexer"
+
 [deploy]
 startCommand = "pnpm start"
 healthcheckPath = "/health"
