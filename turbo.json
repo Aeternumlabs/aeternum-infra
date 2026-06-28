@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "generated/**", ".ponder/**"]
+      "outputs": ["dist/**", "generated/**", ".ponder/**", "ponder-env.d.ts"]
     },
     "dev": {
       "cache": false,
