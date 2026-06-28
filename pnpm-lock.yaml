@@ -51,15 +51,21 @@ importers:
       '@aeternum/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@aeternum/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       viem:
         specifier: ^2.51.3
         version: 2.53.1(typescript@6.0.3)(zod@3.25.76)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^25.9.1
         version: 25.9.4
       tsx:
-        specifier: ^4.20.3
+        specifier: ^4.19.2
         version: 4.22.4
       typescript:
         specifier: ^6.0.3
