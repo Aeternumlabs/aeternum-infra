@@ -36,8 +36,9 @@ const keeperEnvSchema = z.object({
     .string()
     .regex(
       /^0x[a-fA-F0-9]{64}$/,
-      "KEEPER_PRIVATE_KEY must be a 0x-prefixed 32-byte hex string",
-    ),
+      "KEEPER_PRIVATE_KEY must be an 0x-prefixed 32-byte hex string",
+    )
+    .transform((val) => val as `0x${string}`),
 
   // Optional overrides — default to values from packages/config/src/constants.ts
   KEEPER_POLL_INTERVAL_MS: z.coerce
