@@ -6,16 +6,19 @@
   "scripts": {
     "dev":   "dotenv -e ../../.env -e .env -- node dist/index.js",
     "start": "dotenv -e ../../.env -e .env -- node dist/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
     "@aeternum/config": "workspace:*",
-    "viem": "^2.51.3"
+    "@aeternum/db": "workspace:*",
+    "viem": "^2.51.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "tsx": "^4.20.3",
+    "tsx": "^4.19.2",
     "typescript": "^6.0.3"
   }
 }
