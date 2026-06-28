@@ -1,47 +1,38 @@
+/**
+ * src/logger.ts
+ *
+ * Lightweight structured JSON logger. No external dependencies.
+ * Each log line is a single JSON object suitable for Railway's log
+ * aggregation and any downstream log processing tooling.
+ *
+ * Output shape:
+ *   { "ts": "2026-01-01T00:00:00.000Z", "level": "info", "msg": "...", ...data }
+ */
+
 type LogLevel = "debug" | "info" | "warn" | "error";
 
-const LEVEL_ORDER: Record<LogLevel, number> = {
-  debug: 10,
-  info: 20,
-  warn: 30,
-  error: 40,
-};
+type LogData = Record<string, unknown>;
 
-function getMinLevel(): LogLevel {
-  const configured = process.env.LOG_LEVEL?.toLowerCase();
-  if (
-    configured === "debug" ||
-    configured === "info" ||
-    configured === "warn" ||
-    configured === "error"
-  ) {
-    return configured;
-  }
-  return "info";
-}
-
-function write(level: LogLevel, message: string, meta?: Record<string, unknown>) {
-  if (LEVEL_ORDER[level] < LEVEL_ORDER[getMinLevel()]) {
-    return;
-  }
-
-  const payload = {
+function write(level: LogLevel, msg: string, data?: LogData): void {
+  const entry: Record<string, unknown> = {
+    ts: new Date().toISOString(),
     level,
-    message,
-    timestamp: new Date().toISOString(),
-    ...meta,
+    msg,
+    ...data,
   };
 
-  console.log(JSON.stringify(payload));
+  const line = JSON.stringify(entry);
+
+  if (level === "error" || level === "warn") {
+    console.error(line);
+  } else {
+    console.log(line);
+  }
 }
 
 export const logger = {
-  debug: (message: string, meta?: Record<string, unknown>) =>
-    write("debug", message, meta),
-  info: (message: string, meta?: Record<string, unknown>) =>
-    write("info", message, meta),
-  warn: (message: string, meta?: Record<string, unknown>) =>
-    write("warn", message, meta),
-  error: (message: string, meta?: Record<string, unknown>) =>
-    write("error", message, meta),
+  debug: (msg: string, data?: LogData) => write("debug", msg, data),
+  info:  (msg: string, data?: LogData) => write("info",  msg, data),
+  warn:  (msg: string, data?: LogData) => write("warn",  msg, data),
+  error: (msg: string, data?: LogData) => write("error", msg, data),
 };
