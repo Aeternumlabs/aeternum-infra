@@ -1,34 +1,99 @@
-import type { Address, PublicClient } from "viem";
+/**
+ * src/scanner.ts
+ *
+ * Identifies vaults due for recovery using a two-layer approach:
+ *
+ *   Layer 1 — DB pre-filter (free, no RPC):
+ *     Queries the Ponder-indexed database for vaults where
+ *     lastActivityTimestamp + inactivityPeriod <= now AND not yet
+ *     recovered, abandoned, or cancelled. Fast and cheap, but may lag
+ *     a few blocks behind the chain head.
+ *
+ *   Layer 2 — Onchain validation (one multicall, no per-vault RPC):
+ *     Calls isRecoveryDue(wallet) for every DB candidate in a single
+ *     eth_call via viem's multicall. Catches any stale DB entries before
+ *     a transaction is ever submitted.
+ *
+ * The contract re-validates all conditions independently inside
+ * _executeRecovery — this scanner is an efficiency layer, not a
+ * security boundary. If validation logic ever drifts, the contract
+ * is always the final arbiter.
+ */
 
-import {
-  AETERNUM_VAULT_ABI,
-  getVaultAddress,
-} from "@aeternum/blockchain";
-import { CHAIN_IDS } from "@aeternum/config";
+import { AETERNUM_VAULT_ABI, type ViemPublicClient } from "@aeternum/blockchain";
+import { getDueVaults, type DbClient } from "@aeternum/db";
+import { logger } from "./logger.js";
 
-export async function scanTriggerableVaults(
-  publicClient: PublicClient,
-  batchSize: number,
+export type Address = `0x${string}`;
+
+/**
+ * Scans for vaults due for recovery and returns a confirmed list of
+ * wallet addresses ready for triggerRecovery submission.
+ *
+ * @param db              Drizzle DB client (read-only).
+ * @param publicClient    Viem public client for onchain validation.
+ * @param contractAddress AeternumVault contract address.
+ * @param dbScanLimit     Max candidates to pull from DB per cycle.
+ *                        Callers should pass env.KEEPER_BATCH_SIZE.
+ */
+export async function scan(
+  db: DbClient,
+  publicClient: ViemPublicClient,
+  contractAddress: Address,
+  dbScanLimit: number,
 ): Promise<Address[]> {
-  const vaultAddress = getVaultAddress(CHAIN_IDS.sepolia);
-  const totalRegistered = await publicClient.readContract({
-    address: vaultAddress,
-    abi: AETERNUM_VAULT_ABI,
-    functionName: "getTotalRegistered",
-  });
+  // --- Layer 1: DB pre-filter ---
+  let candidates: Address[];
 
-  const triggerable: Address[] = [];
-
-  for (let startIndex = 0n; startIndex < totalRegistered; startIndex += BigInt(batchSize)) {
-    const batch = await publicClient.readContract({
-      address: vaultAddress,
-      abi: AETERNUM_VAULT_ABI,
-      functionName: "getTriggerableVaultsBatch",
-      args: [startIndex, BigInt(batchSize)],
+  try {
+    const rows = await getDueVaults(db, dbScanLimit);
+    candidates = rows.map((r) => r.id as Address);
+  } catch (err) {
+    logger.error("Scanner: DB query failed, skipping cycle", {
+      error: err instanceof Error ? err.message : String(err),
     });
-
-    triggerable.push(...batch);
+    return [];
   }
 
-  return triggerable;
+  if (candidates.length === 0) {
+    return [];
+  }
+
+  logger.info("Scanner: DB candidates found", { count: candidates.length });
+
+  // --- Layer 2: Onchain validation
+  // viem's multicall batches all isRecoveryDue reads into a single eth_call.
+  let results: Awaited<ReturnType<typeof publicClient.multicall>>;
+
+  try {
+    results = await publicClient.multicall({
+      contracts: candidates.map((wallet) => ({
+        address: contractAddress,
+        abi: AETERNUM_VAULT_ABI,
+        functionName: "isRecoveryDue" as const,
+        args: [wallet] as const,
+      })),
+      allowFailure: true,
+    });
+  } catch (err) {
+    logger.error("Scanner: onchain validation failed, skipping cycle", {
+      error: err instanceof Error ? err.message : String(err),
+    });
+    return [];
+  }
+
+  const confirmed = candidates.filter((_, i) => {
+    const result = results[i];
+    return result?.status === "success" && result.result === true;
+  });
+
+  const stale = candidates.length - confirmed.length;
+
+  if (stale > 0) {
+    logger.info("Scanner: stale DB entries filtered out", { stale });
+  }
+
+  logger.info("Scanner: onchain-confirmed due vaults", { count: confirmed.length });
+
+  return confirmed;
 }
