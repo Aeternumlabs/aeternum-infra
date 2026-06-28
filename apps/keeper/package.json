@@ -4,21 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev":   "dotenv -e ../../.env -e .env -- node dist/index.js",
+    "dev":   "dotenv -e ../../.env -e .env -- tsx src/index.ts",
     "start": "dotenv -e ../../.env -e .env -- node dist/index.js",
     "build": "tsc",
+    "lint":  "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
-    "@aeternum/config": "workspace:*",
-    "@aeternum/db": "workspace:*",
-    "viem": "^2.51.3",
-    "zod": "^3.24.1"
+    "@aeternum/config":     "workspace:*",
+    "@aeternum/db":         "workspace:*",
+    "viem":                 "^2.51.3",
+    "zod":                  "^3.22.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "tsx": "^4.19.2",
-    "typescript": "^6.0.3"
+    "dotenv-cli":  "^11.0.0",
+    "tsx":         "^4.0.0",
+    "typescript":  "^6.0.3"
   }
 }
