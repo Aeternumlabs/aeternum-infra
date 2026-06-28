@@ -26,6 +26,10 @@ import { logger } from "./logger.js";
 
 export type Address = `0x${string}`;
 
+type IsRecoveryDueResult =
+  | { status: "success"; result: boolean }
+  | { status: "failure"; result?: undefined }
+
 /**
  * Scans for vaults due for recovery and returns a confirmed list of
  * wallet addresses ready for triggerRecovery submission.
@@ -63,7 +67,7 @@ export async function scan(
 
   // --- Layer 2: Onchain validation
   // viem's multicall batches all isRecoveryDue reads into a single eth_call.
-  let results: Awaited<ReturnType<typeof publicClient.multicall>>;
+  let results: IsRecoveryDueResult[] = [];
 
   try {
     results = await publicClient.multicall({
@@ -74,7 +78,7 @@ export async function scan(
         args: [wallet] as const,
       })),
       allowFailure: true,
-    });
+    }) as IsRecoveryDueResult[];
   } catch (err) {
     logger.error("Scanner: onchain validation failed, skipping cycle", {
       error: err instanceof Error ? err.message : String(err),
