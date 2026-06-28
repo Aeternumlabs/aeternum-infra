@@ -25,8 +25,9 @@ import {
   type PublicClient,
   type WalletClient,
   type Chain,
+  type Transport,
 } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { privateKeyToAccount, type PrivateKeyAccount } from "viem/accounts";
 import { mainnet, sepolia } from "viem/chains";
 import { CHAIN_IDS } from "@aeternum/config";
 
@@ -54,7 +55,7 @@ function resolveChain(chainId: number): Chain {
 // --- Public clients ---
 
 export type ViemPublicClient = PublicClient;
-export type ViemWalletClient = WalletClient;
+export type ViemWalletClient = WalletClient<Transport, Chain, PrivateKeyAccount>;
 
 /**
  * Creates a read-only viem public client.
@@ -104,5 +105,5 @@ export function createViemWalletClient(
       retryCount: 3,
       retryDelay: 1_000,
     }),
-  });
+  }) as ViemWalletClient;
 }
