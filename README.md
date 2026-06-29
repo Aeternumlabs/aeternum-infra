@@ -32,10 +32,31 @@ aeternum-infra/
 │   │   │   ├── scanner.ts                ← calls getTriggerableVaultsBatch
 │   │   │   ├── executor.ts               ← submits triggerRecovery via Multicall3
 │   │   │   └── logger.ts                 ← structured logging
+│   │   ├── test/
+│   │   │   ├── unit/
+│   │   │   │   ├── logger.test.ts
+│   │   │   │   ├── scanner.test.ts
+│   │   │   │   ├── executor.test.ts
+│   │   │   │   └── index.test.ts          ← env schema + health server handler
+│   │   │   ├── integration/
+│   │   │   │   ├── due-vault-recovered.test.ts
+│   │   │   │   ├── stale-db-entry.test.ts
+│   │   │   │   ├── failed-recovery-retries.test.ts
+│   │   │   │   ├── recovery-abandoned.test.ts
+│   │   │   │   └── batch-execution.test.ts
+│   │   │   ├── fixtures/
+│   │   │   │   ├── env.ts                ← valid/invalid keeper env fixtures
+│   │   │   │   ├── vaults.ts
+│   │   │   │   ├── event-logs.ts
+│   │   │   │   └── receipts.ts
+│   │   │   ├── helpers/
+│   │   │   │   └── mocks.ts              ← consolidates all helper files
+│   │   │   └── setup.ts
 │   │   ├── .env.example                  ← keeper-specific env vars
 │   │   ├── package.json
 │   │   ├── railway.toml                  ← keeper-specific Railway config
-│   │   └── tsconfig.json                 ← extends ../../tsconfig.json
+│   │   ├── tsconfig.json                 ← extends ../../tsconfig.json
+│   │   └── vitest.config.ts              ← ESM config + unit/integration glob separation
 │   │
 │   └── notifications/                    ← stub — not yet implemented
 │
