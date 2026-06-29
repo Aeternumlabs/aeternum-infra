@@ -21,7 +21,7 @@ export default defineConfig({
     environment: "node",
 
     // Group output by test file for readability in CI logs.
-    reporter: "verbose",
+    reporters: ["verbose"],
 
     // Coverage via V8 — no extra binary required.
     coverage: {
