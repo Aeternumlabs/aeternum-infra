@@ -34,11 +34,14 @@ import { logger } from "./logger.js";
 const keeperEnvSchema = z.object({
   KEEPER_PRIVATE_KEY: z
     .string()
+    .trim()
     .regex(
-      /^0x[a-fA-F0-9]{64}$/,
-      "KEEPER_PRIVATE_KEY must be an 0x-prefixed 32-byte hex string",
+      /^(0x)?[a-fA-F0-9]{64}$/,
+      "KEEPER_PRIVATE_KEY must be a 32-byte hex string (with or without 0x prefix)",
     )
-    .transform((val) => val as `0x${string}`),
+    .transform((val) =>
+      (val.startsWith("0x") ? val : `0x${val}`) as `0x${string}`,
+    ),
 
   // Optional overrides — default to values from packages/config/src/constants.ts
   KEEPER_POLL_INTERVAL_MS: z.coerce
