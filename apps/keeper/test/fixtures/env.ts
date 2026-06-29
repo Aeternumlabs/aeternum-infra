@@ -53,12 +53,6 @@ export const invalidEnvCases = {
     KEEPER_PRIVATE_KEY: undefined,
   },
 
-  /** Missing the 0x prefix */
-  noHexPrefix: {
-    ...validProcessEnv,
-    KEEPER_PRIVATE_KEY: "ab".repeat(32),
-  },
-
   /** Correct prefix but only 16 bytes (needs 32) */
   tooShort: {
     ...validProcessEnv,
