@@ -8,7 +8,12 @@
     "start": "dotenv -e ../../.env -e .env -- node dist/index.js",
     "build": "tsc",
     "lint":  "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test":            "vitest run",
+    "test:unit":       "vitest run --project unit test/unit",
+    "test:integration":"vitest run test/integration",
+    "test:watch":      "vitest",
+    "test:coverage":   "vitest run --coverage"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
@@ -21,6 +26,8 @@
     "@types/node": "^25.9.1",
     "dotenv-cli":  "^11.0.0",
     "tsx":         "^4.0.0",
-    "typescript":  "^6.0.3"
+    "typescript":  "^6.0.3",
+    "vitest": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.9"
   }
 }
