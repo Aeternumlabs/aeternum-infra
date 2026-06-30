@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev":     "dotenv -e ../../.env -e .env -- ponder dev",
-    "start":   "dotenv -e ../../.env -e .env -- ponder start",
-    "codegen": "dotenv -e ../../.env -- ponder codegen",
-    "build":   "dotenv -e ../../.env -- ponder codegen"
+    "dev":     "dotenv -e ../../.env.local -- ponder dev",
+    "start":   "dotenv -e ../../.env.local -- ponder start",
+    "codegen": "dotenv -e ../../.env.local -- ponder codegen",
+    "build":   "dotenv -e ../../.env.local -- ponder codegen"
   },
   "dependencies": {
     "@aeternum/blockchain": "workspace:*",
