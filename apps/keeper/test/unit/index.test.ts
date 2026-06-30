@@ -329,6 +329,17 @@ describe("index.ts — keeper cycle", () => {
       expect.objectContaining({ error: "scan exploded" }),
     );
   });
+
+  it("stringifies a non-Error thrown value in the unhandled cycle error log", async () => {
+    hoisted.scan.mockRejectedValueOnce("a plain string was thrown");
+
+    await importIndexFresh(validProcessEnv as Record<string, string>);
+
+    expect(hoisted.logger.error).toHaveBeenCalledWith(
+      "Keeper: unhandled cycle error",
+      { error: "a plain string was thrown", stack: undefined },
+    );
+  });
 });
 
 // --- Graceful shutdown ---
@@ -350,6 +361,20 @@ describe("index.ts — graceful shutdown", () => {
     expect(hoisted.logger.info).toHaveBeenCalledWith(
       "Keeper: SIGTERM received — will stop after current cycle",
     );
+  });
+
+  it("breaks the loop immediately if SIGTERM is received during an active cycle", async () => {
+    // Force a mid-cycle shutdown by making scan() emit SIGTERM
+    hoisted.scan.mockImplementationOnce(async () => {
+      process.emit("SIGTERM" as any);
+      return [];
+    });
+
+    await importIndexFresh(validProcessEnv as Record<string, string>);
+
+    // The loop should hit `if (!running) break;` and exit without hitting setTimeout
+    expect(hoisted.logger.info).toHaveBeenCalledWith("Keeper: shutdown complete");
+    expect(exitSpy).toHaveBeenCalledWith(0);
   });
 });
 
