@@ -68,6 +68,18 @@ describe("scanner.scan", () => {
       expect(publicClient.multicall).not.toHaveBeenCalled();
     });
 
+    it("stringifies a non-Error value thrown by the DB query", async () => {
+      mockGetDueVaults.mockRejectedValue("connection string malformed");
+
+      const result = await scan(db, publicClient, CONTRACT_ADDRESS, 1000);
+
+      expect(result).toEqual([]);
+      expect(logger.error).toHaveBeenCalledWith(
+        "Scanner: DB query failed, skipping cycle",
+        { error: "connection string malformed" },
+      );
+    });
+
     it("logs candidate count when DB returns rows", async () => {
       mockGetDueVaults.mockResolvedValue([dueVault]);
       publicClient.multicall.mockResolvedValue([{ status: "success", result: true }]);
@@ -197,6 +209,19 @@ describe("scanner.scan", () => {
       expect(logger.error).toHaveBeenCalledWith(
         "Scanner: onchain validation failed, skipping cycle",
         expect.objectContaining({ error: "RPC timeout" }),
+      );
+    });
+
+    it("stringifies a non-Error value thrown by multicall", async () => {
+      mockGetDueVaults.mockResolvedValue([dueVault]);
+      publicClient.multicall.mockRejectedValue("RPC node returned malformed response");
+
+      const result = await scan(db, publicClient, CONTRACT_ADDRESS, 1000);
+
+      expect(result).toEqual([]);
+      expect(logger.error).toHaveBeenCalledWith(
+        "Scanner: onchain validation failed, skipping cycle",
+        { error: "RPC node returned malformed response" },
       );
     });
 

@@ -287,6 +287,17 @@ describe("executor.execute", () => {
         expect.objectContaining({ wallets: [WALLET_A] }),
       );
     });
+
+    it("stringifies a non-Error value thrown during batch submission", async () => {
+      walletClient.writeContract.mockRejectedValue("nonce manager rejected request");
+
+      await execute(walletClient, publicClient, CONTRACT_ADDRESS, [WALLET_A]);
+
+      expect(logger.error).toHaveBeenCalledWith(
+        "Executor: batch submission failed",
+        expect.objectContaining({ error: "nonce manager rejected request" }),
+      );
+    });
   });
 
   // --- Top-level progress logging ---
