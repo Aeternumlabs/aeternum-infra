@@ -51,7 +51,9 @@ describe("integration: due vault is recovered end-to-end", () => {
     publicClient.waitForTransactionReceipt.mockResolvedValue(
       createReceipt({ logs: [{ fake: "log" }] }),
     );
-    mockParseEventLogs.mockImplementation(({ eventName }: any): any => eventLogsByName(eventName));
+    mockParseEventLogs.mockImplementation(({ eventName }: any): any =>
+      eventName === "RecoveryExecuted" ? eventLogsByName(eventName) : [],
+    );
   });
 
   it("scan confirms the wallet as due after DB pre-filter and onchain validation", async () => {
