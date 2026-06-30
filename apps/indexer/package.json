@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev":     "dotenv -e ../../.env.local -e .env.local -- ponder dev",
+    "dev":     "dotenv -e ../../.env.local -e .env.local -- ponder dev --disable-ui",
+    "dev:ui":  "dotenv -e ../../.env.local -e .env.local -- ponder dev",
     "start":   "dotenv -e ../../.env.local -e .env.local -- ponder start",
     "codegen": "dotenv -e ../../.env.local -e .env.local -- ponder codegen",
     "build":   "dotenv -e ../../.env.local -e .env.local -- ponder codegen"
