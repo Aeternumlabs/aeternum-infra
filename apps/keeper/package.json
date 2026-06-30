@@ -10,7 +10,7 @@
     "lint":  "tsc --noEmit",
     "clean": "rm -rf dist",
     "test":            "vitest run",
-    "test:unit":       "vitest run --project unit test/unit",
+    "test:unit":       "vitest run test/unit",
     "test:integration":"vitest run test/integration",
     "test:watch":      "vitest",
     "test:coverage":   "vitest run --coverage"
