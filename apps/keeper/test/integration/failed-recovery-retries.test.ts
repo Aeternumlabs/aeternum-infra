@@ -112,6 +112,7 @@ describe("integration: failed recovery is logged and remains retriable", () => {
     mockGetDueVaults.mockResolvedValue([vaultWithBadBackup]);
 
     const cycle2 = await scan(db, publicClient, CONTRACT_ADDRESS, 1000);
+    await execute(walletClient, publicClient, CONTRACT_ADDRESS, cycle2); // ← this line was missing
 
     expect(cycle2).toEqual([WALLET_B]);
     expect(walletClient.writeContract).toHaveBeenCalledTimes(2);
