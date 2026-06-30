@@ -105,7 +105,11 @@ async function importIndexFresh(envVars: Record<string, string | undefined>) {
 }
 
 beforeEach(() => {
-  exitSpy = vi.spyOn(process, "exit").mockImplementation(() => undefined as never);
+  exitSpy = vi.spyOn(process, "exit").mockImplementation((code) => {
+    // Throw an error to physically halt module evaluation for failure exits
+    if (code !== 0) throw new Error(`Mock process.exit called with ${code}`);
+    return undefined as never;
+  });
   originalSetTimeout = global.setTimeout;
 });
 
@@ -186,12 +190,20 @@ describe("index.ts — keeper env validation", () => {
  * For invalid-env cases, index.ts calls process.exit(1) synchronously
  * during module evaluation and never reaches the polling loop — so the
  * scan-based waitFor used by importIndexFresh would hang. This variant
- * skips that wait.
+ * skips that wait and safely catches the simulated process termination error.
  */
 async function importIndexFreshInvalid(envVars: Record<string, string | undefined>) {
   process.env = { ...envVars } as NodeJS.ProcessEnv;
   vi.resetModules();
-  await import("../../src/index.js");
+  
+  try {
+    await import("../../src/index.js");
+  } catch (err: any) {
+    // Swallow our intentional halt, but re-throw if it's a real bug (like the TypeError)
+    if (!err.message?.includes("Mock process.exit")) {
+      throw err;
+    }
+  }
 }
 
 // --- Client instantiation ---
