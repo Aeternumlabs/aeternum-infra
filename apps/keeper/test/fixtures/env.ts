@@ -18,6 +18,9 @@
 export const VALID_PRIVATE_KEY =
   `0x${"ab".repeat(32)}` as `0x${string}`;
 
+export const VALID_PRIVATE_KEY_NO_PREFIX = 
+  "ab".repeat(32);
+
 export const CONTRACT_ADDRESS =
   "0x9Eb95e4b47aECCB131f20AE7af33A29832499067" as `0x${string}`;
 
@@ -32,6 +35,11 @@ export const validProcessEnv: Record<string, string> = {
   DATABASE_URL:           "postgresql://user:password@localhost:5432/aeternum",
   // Keeper-specific
   KEEPER_PRIVATE_KEY:     VALID_PRIVATE_KEY,
+};
+
+export const validProcessEnvNoPrefix: Record<string, string> = {
+  ...validProcessEnv,
+  KEEPER_PRIVATE_KEY: VALID_PRIVATE_KEY_NO_PREFIX,
 };
 
 // --- 2. Typed env object exported by @aeternum/config ---
@@ -53,10 +61,16 @@ export const invalidEnvCases = {
     KEEPER_PRIVATE_KEY: undefined,
   },
 
-  /** Correct prefix but only 16 bytes (needs 32) */
-  tooShort: {
+  /** Private key with 0x prefix but only 16 bytes */
+  tooShortWithPrefix: {
     ...validProcessEnv,
     KEEPER_PRIVATE_KEY: `0x${"ab".repeat(16)}`,
+  },
+
+  /** Private key without prefix and only 16 bytes */
+  tooShortNoPrefix: {
+    ...validProcessEnv,
+    KEEPER_PRIVATE_KEY: "ab".repeat(16),
   },
 
   /** Correct length but non-hex characters */
