@@ -352,3 +352,23 @@ describe("index.ts — graceful shutdown", () => {
     );
   });
 });
+
+describe("index.ts — SIGINT shutdown", () => {
+  it("closes the health server and exits 0 immediately on SIGINT", async () => {
+    await importIndexFresh(validProcessEnv as Record<string, string>);
+
+    // importIndexFresh already drove a SIGTERM-triggered shutdown to
+    // completion. Clear those calls so we isolate SIGINT's own effect.
+    hoisted.httpClose.mockClear();
+    exitSpy.mockClear();
+    hoisted.logger.info.mockClear();
+
+    process.emit("SIGINT" as any);
+
+    expect(hoisted.logger.info).toHaveBeenCalledWith(
+      "Keeper: SIGINT received — stopping",
+    );
+    expect(hoisted.httpClose).toHaveBeenCalled();
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+});
