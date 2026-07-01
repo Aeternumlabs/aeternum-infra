@@ -103,6 +103,34 @@ describe("executor.execute", () => {
 
       expect(publicClient.waitForTransactionReceipt).toHaveBeenCalledWith({ hash: TX_HASH_1 });
     });
+
+    it("calls estimateContractGas with the correct aggregate3 multicall arguments", async () => {
+      publicClient.estimateContractGas.mockResolvedValue(150_000n);
+
+      await execute(walletClient, publicClient, CONTRACT_ADDRESS, [WALLET_A]);
+
+      expect(publicClient.estimateContractGas).toHaveBeenCalledWith(
+        expect.objectContaining({
+          address: MULTICALL3_ADDRESS,
+          functionName: "aggregate3",
+        })
+      );
+    });
+
+    it("passes the estimated gas (or padded gas) into the writeContract configuration", async () => {
+      // Force a unique gas value to ensure it's forwarded correctly
+      const mockGasEstimate = 333_333n;
+      publicClient.estimateContractGas.mockResolvedValue(mockGasEstimate);
+
+      await execute(walletClient, publicClient, CONTRACT_ADDRESS, [WALLET_A]);
+
+      const callArgs = walletClient.writeContract.mock.calls[0][0];
+      
+      // If your implementation pads the gas (e.g., estimate * 1.2n), adjust this match
+      // If it passes it raw, expect.toEqual(mockGasEstimate) or expect.toBeGreaterThan(0n) works perfectly
+      expect(callArgs.gas).toBeDefined();
+      expect(BigInt(callArgs.gas)).toBeGreaterThanOrEqual(mockGasEstimate);
+    });
   });
 
   // --- Batch splitting ---
@@ -262,6 +290,27 @@ describe("executor.execute", () => {
       );
       // Second batch still attempted despite first batch's failure
       expect(walletClient.writeContract).toHaveBeenCalledTimes(2);
+    });
+
+    it("logs an error and continues to the next batch if estimateContractGas throws", async () => {
+      // Simulate gas estimation failing on the first batch, but succeeding on the second
+      publicClient.estimateContractGas
+        .mockRejectedValueOnce(new Error("gas estimation reverted: execution reverted"))
+        .mockResolvedValueOnce(200_000n);
+
+      await execute(walletClient, publicClient, CONTRACT_ADDRESS, makeAddresses(25));
+
+      // Verify the error was logged for the first batch
+      expect(logger.error).toHaveBeenCalledWith(
+        "Executor: batch submission failed",
+        expect.objectContaining({ 
+          batch: 1, 
+          error: "gas estimation reverted: execution reverted" 
+        }),
+      );
+
+      // Verify that writeContract was only called once (for the successful second batch)
+      expect(walletClient.writeContract).toHaveBeenCalledOnce();
     });
 
     it("logs an error and does not throw when waitForTransactionReceipt throws", async () => {
