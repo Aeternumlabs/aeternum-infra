@@ -6,8 +6,8 @@
  * functions on every call — tests never share mock state.
  *
  * USAGE PATTERN:
- *   const publicClient = createMockPublicClient();
- *   publicClient.multicall.mockResolvedValue([...]);
+ * const publicClient = createMockPublicClient();
+ * publicClient.multicall.mockResolvedValue([...]);
  *
  * The interfaces extend the real viem/drizzle types so mocks can be
  * passed directly to scan(), execute(), etc. without any casting at
@@ -49,9 +49,13 @@ export const makeAddresses = (n: number): `0x${string}`[] =>
 // Viem signature with MockInstance. This satisfies both Viem's strict arguments 
 // and Vitest's mocking utilities (like .mockResolvedValue).
 
-export type MockPublicClient = Omit<ViemPublicClient, "multicall" | "waitForTransactionReceipt"> & {
+export type MockPublicClient = Omit<
+  ViemPublicClient, 
+  "multicall" | "waitForTransactionReceipt" | "estimateContractGas"
+> & {
   multicall: ViemPublicClient["multicall"] & MockInstance;
   waitForTransactionReceipt: ViemPublicClient["waitForTransactionReceipt"] & MockInstance;
+  estimateContractGas: ViemPublicClient["estimateContractGas"] & MockInstance;
 };
 
 export type MockWalletClient = Omit<ViemWalletClient, "writeContract"> & {
@@ -64,15 +68,17 @@ export type MockWalletClient = Omit<ViemWalletClient, "writeContract"> & {
  * Creates a mock viem public client.
  *
  * Defaults:
- *   multicall                → resolves to [] (no due vaults)
- *   waitForTransactionReceipt → resolves to a minimal success receipt
+ * multicall            → resolves to [] (no due vaults)
+ * estimateContractGas  → resolves to a simulated baseline gas value (e.g., 200,000n)
+ * waitForTransactionReceipt → resolves to a minimal success receipt
  *
  * Override per-test:
- *   publicClient.multicall.mockResolvedValue([{ status: "success", result: true }]);
+ * publicClient.multicall.mockResolvedValue([{ status: "success", result: true }]);
  */
 export function createMockPublicClient(): MockPublicClient {
   return {
     multicall: vi.fn().mockResolvedValue([]),
+    estimateContractGas: vi.fn().mockResolvedValue(200_000n),
     waitForTransactionReceipt: vi.fn().mockResolvedValue({
       blockNumber:     100n,
       gasUsed:         91_000n,
@@ -87,10 +93,10 @@ export function createMockPublicClient(): MockPublicClient {
  * Creates a mock viem wallet client.
  *
  * Default:
- *   writeContract → resolves to TX_HASH_1
+ * writeContract → resolves to TX_HASH_1
  *
  * Override per-test:
- *   walletClient.writeContract.mockRejectedValue(new Error("out of gas"));
+ * walletClient.writeContract.mockRejectedValue(new Error("out of gas"));
  */
 export function createMockWalletClient(): MockWalletClient {
   return {
