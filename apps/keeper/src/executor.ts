@@ -92,11 +92,26 @@ export async function execute(
     }));
 
     try {
+      // 1. Estimate the total gas needed for the Multicall transaction.
+      // During simulation, the node grants plenty of gas so the inner execution succeeds.
+      const estimatedGas = await publicClient.estimateContractGas({
+        address: MULTICALL3_ADDRESS,
+        abi: MULTICALL3_ABI,
+        functionName: "aggregate3",
+        args: [calls],
+        account: walletClient.account,
+      });
+
+      // 2. Add a 30% buffer to override EIP-150 (63/64ths rule) overhead during sub-calls
+      const gasWithBuffer = (estimatedGas * 130n) / 100n;
+
+      // 3. Submit transaction with the safe, padded gas limit
       const hash = await walletClient.writeContract({
         address: MULTICALL3_ADDRESS,
         abi: MULTICALL3_ABI,
         functionName: "aggregate3",
         args: [calls],
+        gas: gasWithBuffer,
       });
 
       logger.info("Executor: transaction submitted", { hash, batch: batchNum });
