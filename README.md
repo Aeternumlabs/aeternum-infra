@@ -1,14 +1,14 @@
 # Aeternum Infrastructure
 
+[![Lint](https://github.com/Aeternumlabs/aeternum-infra/actions/workflows/lint.yml/badge.svg)](https://github.com/Aeternumlabs/aeternum-infra/actions/workflows/lint.yml) 
+[![Tests](https://github.com/Aeternumlabs/aeternum-infra/actions/workflows/test.yml/badge.svg)](https://github.com/Aeternumlabs/aeternum-infra/actions/workflows/test.yml)
+
 This repo houses the off-chain infrastructure powering the Aeternum protocol, including indexing, automation, monitoring, and supporting backend services.
 
 ---
 
 ## Folder structure
 
-```
-aeternum-infra/
-│
 ├── apps/
 │   │
 │   ├── indexer/                          ← migrated from aeternum-indexer
