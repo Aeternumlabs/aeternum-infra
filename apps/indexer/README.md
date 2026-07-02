@@ -1,40 +1,20 @@
 # Aeternum Indexer
 
-This is an on-chain indexer for the `AeternumVault` smart contract. It listens for vault lifecycle events, stores normalized state in a Postgres-compatible database, and exposes GraphQL plus REST query endpoints.
+On-chain event indexer for the AeternumVault smart contract. Built with Ponder, it indexes vault lifecycle events, stores normalized state in a PostgreSQL database, and exposes GraphQL and REST query endpoints.
 
 ## Features
 
-- Indexes `AeternumVault` contract events on Sepolia
+- Indexes AeternumVault contract events on Sepolia
 - Stores vault state, transaction history, and recovery lifecycle events
-- Exposes an auto-generated GraphQL API
-- Provides a custom REST endpoint at `/vault-count`
-- Supports environment-driven RPC and contract address configuration
+- Exposes auto-generated GraphQL API
+- Provides custom REST endpoints
+- Environment-driven configuration for RPC and contract addresses
 
-## Repository structure
+## Schema
 
-```bash
-aeternum-indexer/
-├── .env.local                 # local environment variables
-├── .gitignore                 # ignored files
-├── package.json               # scripts and dependencies
-├── tsconfig.json              # TypeScript configuration
-├── ponder.config.ts           # Ponder chain + contract configuration
-├── ponder.schema.ts           # database schema definitions
-├── abis/                      # contract ABIs
-│   └── AeternumVault.ts       # AeternumVault ABI export
-├── src/                       # source code
-│   ├── index.ts               # Ponder event handlers
-│   └── api/                   # API entrypoint
-│       └── index.ts
-└── generated/                 # Ponder-generated artifacts
-```
-
-## Requirements
-
-- Node.js
-- `pnpm`
-- PostgreSQL-compatible database
-- Sepolia RPC endpoint
+- **vaults** — Core vault entity with registration and state metadata
+- **vault_transactions** — deposits, withdrawals, transfers
+- **recovery_events** — executed, failed, abandoned, cancelled recoveries
 
 ## Setup
 
@@ -44,64 +24,46 @@ aeternum-indexer/
 pnpm install
 ```
 
-1. Create `.env.local` in the repo root with:
+2. Configure environment variables in `.env.local`:
 
 ```bash
-DRPC_URL=<your_sepolia_drpc_url>
-DATABASE_URL=postgresql://username:password@localhost/database_name
-NEXT_PUBLIC_VAULT_ADDRESS=<0xYourContractAddressHere>
-```
-
-1. Start the indexer:
-
-```bash
-pnpm dev
+CHAIN_ID=11155111
+RPC_URL=YourSepoliaRpcUrl
+CONTRACT_ADDRESS=0xYourContractAddressHere
+CONTRACT_DEPLOY_BLOCK=BlockNumber
+DATABASE_URL=YourDatabaseUrl
 ```
 
 ## Scripts
 
-- `pnpm dev` — run the indexer locally
-- `pnpm start` — start the Ponder application
-- `pnpm codegen` — generate schema/type artifacts
+```bash
+cd apps/indexer
+pnpm dev          # Start indexer in dev mode
+pnpm build        # Build indexer package
+pnpm start        # Start indexer in production mode
+pnpm codegen      # Generate schema/type artifacts
+```
 
 ## Configuration
 
-- `ponder.config.ts` configures Sepolia:
-  - chain ID `11155111`
-  - RPC via `DRPC_URL`
-  - max 10 requests/sec
-  - logs fetched in blocks of `1000`
-- The `AeternumVault` contract address is set from `NEXT_PUBLIC_VAULT_ADDRESS`
-- Indexing starts from block `10862194`
-
-## Schema
-
-- `vaults` — vault registration and state metadata
-- `vault_transactions` — deposits, withdrawals, transfers
-- `recovery_events` — executed, failed, abandoned, cancelled recoveries
+- **Chain**: Sepolia (ID: 11155111)
+- **RPC**: Configured via `RPC_URL` env var
+- **Rate limit**: 10 requests/second
+- **Block range**: 1000 blocks per log fetch
+- **Contract**: AeternumVault address from `CONTRACT_ADDRESS`
+- **Start block**: Indexing starts from block `11140604`
 
 ## API
 
 The GraphQL API is exposed at:
-
 - `/`
 - `/graphql`
 
-Custom REST endpoint:
-
-- `/vault-count`
-
-Example response:
-
-```json
-{
-  "success": true,
-  "totalVaults": 42
-}
-```
+Custom REST endpoints are available via Hono.
 
 ## Notes
 
-- `src/index.ts` contains the core Ponder event handlers.
-- `src/api/index.ts` mounts the GraphQL API and a simple REST health endpoint.
-- The database schema is defined in `ponder.schema.ts` using Ponder's `onchainTable` helper.
+- Event handlers are in `src/index.ts`
+- API routes are in `src/api/`
+- Database schema is defined in `ponder.schema.ts`
+- Chain and contract configuration is in `ponder.config.ts`
