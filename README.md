@@ -11,6 +11,12 @@ This repo houses the off-chain infrastructure powering the Aeternum protocol, in
 - **keeper** — Automated recovery bot that scans for due vaults and executes recoveries
 - **notifications** — (coming soon) Notification service for protocol events
 
+## Packages
+
+- **blockchain** — Contract ABIs, viem client factories, and network addresses
+- **db** — PostgreSQL client and shared query helpers
+- **config** — Environment validation with Zod and shared constants
+
 ## Folder structure
 
 ```
@@ -19,8 +25,24 @@ aeternum-infra/
 ├── apps/
 │   │
 │   ├── indexer/                          ← Ponder-based event indexer
+│   │   ├── .env.example                  ← indexer-specific env vars
+│   │   ├── package.json
+│   │   ├── ponder.config.ts              ← chain + contract configuration
+│   │   ├── ponder.schema.ts              ← database schema definitions
+│   │   ├── railway.toml                  ← indexer-specific Railway config
+│   │   ├── README.md                     ← indexer documentation
+│   │   ├── src/                          ← source code
+│   │   └── tsconfig.json                 ← extends ../../tsconfig.json
 │   │
 │   ├── keeper/                           ← Automated recovery bot
+│   │   ├── .env.example                  ← keeper-specific env vars
+│   │   ├── package.json
+│   │   ├── railway.toml                  ← keeper-specific Railway config
+│   │   ├── README.md                     ← keeper documentation
+│   │   ├── src/                          ← source code
+│   │   ├── test/                         ← unit + integration tests
+│   │   ├── vitest.config.ts              ← test configuration
+│   │   └── tsconfig.json                 ← extends ../../tsconfig.json
 │   │
 │   └── notifications/                    ← stub — not yet implemented
 │
@@ -77,8 +99,10 @@ pnpm test         # Run all tests
 pnpm format       # Format code with Prettier
 ```
 
-## Packages
+## Notes
 
-- **blockchain** — Contract ABIs, viem client factories, and network addresses
-- **db** — PostgreSQL client and shared query helpers
-- **config** — Environment validation with Zod and shared constants
+- Uses pnpm workspaces for monorepo management
+- Turbo handles build pipeline and task orchestration
+- Shared environment variables are in root `.env.local`
+- App-specific environment variables are in each app's `.env.local`
+- See individual app READMEs for detailed setup and configuration
