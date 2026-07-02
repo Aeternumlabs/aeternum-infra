@@ -15,51 +15,8 @@ aeternum-infra/
 ├── apps/
 │   │
 │   ├── indexer/                          ← migrated from aeternum-indexer
-│   │   ├── generated/
-│   │   │   └── schema.graphql            ← Ponder-generated, do not edit manually
-│   │   ├── src/
-│   │   │   ├── api/
-│   │   │   │   └── index.ts              ← Ponder's built-in Hono API layer
-│   │   │   └── index.ts                  ← Ponder event handlers
-│   │   ├── .env.example                  ← indexer-specific env vars
-│   │   ├── package.json
-│   │   ├── ponder-env.d.ts               ← Ponder type declarations
-│   │   ├── ponder.config.ts              ← chain + contract configuration
-│   │   ├── ponder.schema.ts              ← database schema definitions
-│   │   ├── railway.toml                  ← indexer-specific Railway config
-│   │   └── tsconfig.json                 ← extends ../../tsconfig.json
 │   │
 │   ├── keeper/                           ← new — Aeternum Labs keeper bot
-│   │   ├── src/
-│   │   │   ├── index.ts                  ← entry point, main polling loop
-│   │   │   ├── scanner.ts                ← calls getTriggerableVaultsBatch
-│   │   │   ├── executor.ts               ← submits triggerRecovery via Multicall3
-│   │   │   └── logger.ts                 ← structured logging
-│   │   ├── test/
-│   │   │   ├── unit/
-│   │   │   │   ├── logger.test.ts
-│   │   │   │   ├── scanner.test.ts
-│   │   │   │   ├── executor.test.ts
-│   │   │   │   └── index.test.ts          ← env schema + health server handler
-│   │   │   ├── integration/
-│   │   │   │   ├── due-vault-recovered.test.ts
-│   │   │   │   ├── stale-db-entry.test.ts
-│   │   │   │   ├── failed-recovery-retries.test.ts
-│   │   │   │   ├── recovery-abandoned.test.ts
-│   │   │   │   └── batch-execution.test.ts
-│   │   │   ├── fixtures/
-│   │   │   │   ├── env.ts                ← valid/invalid keeper env fixtures
-│   │   │   │   ├── vaults.ts
-│   │   │   │   ├── event-logs.ts
-│   │   │   │   └── receipts.ts
-│   │   │   ├── helpers/
-│   │   │   │   └── mocks.ts              ← consolidates all helper files
-│   │   │   └── setup.ts
-│   │   ├── .env.example                  ← keeper-specific env vars
-│   │   ├── package.json
-│   │   ├── railway.toml                  ← keeper-specific Railway config
-│   │   ├── tsconfig.json                 ← extends ../../tsconfig.json
-│   │   └── vitest.config.ts              ← ESM config + unit/integration glob separation
 │   │
 │   └── notifications/                    ← stub — not yet implemented
 │
@@ -92,7 +49,6 @@ aeternum-infra/
 │
 ├── .env.example                          ← root-level shared env vars
 ├── .gitignore
-├── .nvmrc                                ← 22
 ├── package.json                          ← workspace root, no source
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml                   ← declares apps/* and packages/*
