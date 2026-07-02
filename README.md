@@ -5,7 +5,11 @@
 
 This repo houses the off-chain infrastructure powering the Aeternum protocol, including indexing, automation, monitoring, and supporting backend services.
 
----
+## Apps
+
+- **indexer** — On-chain event indexer for AeternumVault contract with GraphQL + REST API
+- **keeper** — Automated recovery bot that scans for due vaults and executes recoveries
+- **notifications** — (coming soon) Notification service for protocol events
 
 ## Folder structure
 
@@ -14,9 +18,9 @@ aeternum-infra/
 │
 ├── apps/
 │   │
-│   ├── indexer/                          ← migrated from aeternum-indexer
+│   ├── indexer/                          ← Ponder-based event indexer
 │   │
-│   ├── keeper/                           ← new — Aeternum Labs keeper bot
+│   ├── keeper/                           ← Automated recovery bot
 │   │
 │   └── notifications/                    ← stub — not yet implemented
 │
@@ -25,7 +29,7 @@ aeternum-infra/
 │   ├── blockchain/                       ← ABI, viem clients, contract addresses
 │   │   ├── src/
 │   │   │   ├── index.ts                  ← barrel export
-│   │   │   ├── abi.ts                    ← AeternumVault ABI (migrated from indexer)
+│   │   │   ├── abi.ts                    ← AeternumVault and Multicall3 ABIs
 │   │   │   ├── addresses.ts              ← contract address per network
 │   │   │   └── client.ts                 ← viem publicClient + walletClient factory
 │   │   ├── package.json
@@ -56,3 +60,25 @@ aeternum-infra/
 ├── tsconfig.json                         ← base config extended by all apps/packages
 └── turbo.json                            ← build pipeline + task dependency graph
 ```
+
+## Setup
+
+```bash
+pnpm install
+```
+
+## Commands
+
+```bash
+pnpm dev          # Start all apps in dev mode
+pnpm build        # Build all packages
+pnpm lint         # Lint all packages
+pnpm test         # Run all tests
+pnpm format       # Format code with Prettier
+```
+
+## Packages
+
+- **blockchain** — Contract ABIs, viem client factories, and network addresses
+- **db** — PostgreSQL client and shared query helpers
+- **config** — Environment validation with Zod and shared constants
