@@ -9,6 +9,9 @@ This repo houses the off-chain infrastructure powering the Aeternum protocol, in
 
 ## Folder structure
 
+```
+aeternum-infra/
+│
 ├── apps/
 │   │
 │   ├── indexer/                          ← migrated from aeternum-indexer
